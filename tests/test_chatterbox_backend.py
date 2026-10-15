@@ -31,8 +31,8 @@ def test_indonesian_uses_malay_language(monkeypatch, tmp_path: Path):
     monkeypatch.setattr(backend, "_get_model", lambda: FakeModel())
     monkeypatch.setattr(
         "soundfile.write",
-        lambda path, audio, sr: calls.update(
-            written_audio=audio, written_sr=sr))
+        lambda path, audio, sr, **kwargs: calls.update(
+            written_audio=audio, written_sr=sr, written_options=kwargs))
 
     backend.synthesize("Halo", tmp_path / "reference.wav", "id",
                        tmp_path / "result.wav")
@@ -40,6 +40,8 @@ def test_indonesian_uses_malay_language(monkeypatch, tmp_path: Path):
     assert calls["language_id"] == "ms"
     assert calls["written_audio"] == [0.0, 0.0]
     assert calls["written_sr"] == 24000
+    assert calls["written_options"] == {
+        "format": "WAV", "subtype": "PCM_16"}
 
 
 def test_factory_forwards_chatterbox_options():

@@ -27,7 +27,7 @@ def run(name: str, text: str) -> None:
     if name == "chatterbox":
         # Uji dua preset ekspresi untuk narasi Indonesia.
         from app.pipeline.backends.chatterbox import ChatterboxBackend
-        presets = [("netral", 0.4, 0.3), ("ekspresif", 0.7, 0.3)]
+        presets = [("netral", 0.4, 0.3)]
         b = ChatterboxBackend(exaggeration=0.4, cfg_weight=0.3)
         b._device = "cpu"
         for label, ex, cfg in presets:

@@ -144,5 +144,6 @@ class ChatterboxBackend:
         out_wav.parent.mkdir(parents=True, exist_ok=True)
         if hasattr(wav, "detach"):
             wav = wav.detach().cpu().squeeze().numpy()
-        sf.write(str(out_wav), wav, model.sr)
+        sf.write(str(out_wav), wav, int(model.sr),
+                 format="WAV", subtype="PCM_16")
         return out_wav
