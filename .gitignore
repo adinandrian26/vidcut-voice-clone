@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.log
+.env
+.pytest_cache/
+
+# Generated jobs, saved voices, and downloaded model weights
+data/
+voices/
+models/
+tmp_ab/
+tmp_*.py
+tmp_*.txt
+
+# Local environments and editor files
+.venv/
+venv/
+.idea/
+.vscode/

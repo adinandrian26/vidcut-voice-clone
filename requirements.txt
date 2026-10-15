@@ -1,0 +1,25 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+python-multipart>=0.0.9
+yt-dlp>=2024.4.9
+numpy>=1.26
+scipy>=1.12
+soundfile>=0.12
+mutagen>=1.47
+requests>=2.31
+pytest>=8.0
+httpx>=0.27
+# --- Berat (CPU bisa, lambat). Urutan pasang Windows: ---
+# 1. torch CPU:
+#    pip install torch --index-url https://download.pytorch.org/whl/cpu
+# 2. torchaudio CPU:
+#    pip install torchaudio --index-url https://download.pytorch.org/whl/cpu
+# 3. pip install demucs piper-tts av librosa pydub eng_to_ipa transformers
+#       whisper-timestamped inflect unidecode pypinyin jieba gruut langcodes
+#       cn2an
+# 4. pip install "git+https://github.com/myshell-ai/OpenVoice.git" --no-deps
+#    (paket av versi lama gagal build di Windows -> pasang av biner dulu)
+# 5. Backend Chatterbox Multilingual V3 (opsional, kualitas lebih tinggi):
+#    pip install --no-deps "git+https://github.com/resemble-ai/chatterbox.git"
+#    pip install transformers==5.2.0 safetensors==0.5.3 librosa==0.11.0

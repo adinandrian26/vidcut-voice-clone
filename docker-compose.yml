@@ -1,0 +1,38 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8520:8520"
+    volumes:
+      - ./data:/srv/data
+      - ./models:/srv/models
+    environment:
+      HF_HOME: /srv/models/hf_cache
+      HF_HUB_CACHE: /srv/models/hf_cache
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+    env_file: .env
+    restart: unless-stopped
+
+  worker:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8521
+    volumes:
+      - ./data:/srv/data
+      - ./models:/srv/models
+    environment:
+      HF_HOME: /srv/models/hf_cache
+      HF_HUB_CACHE: /srv/models/hf_cache
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+    env_file: .env
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redisdata:/data
+
+volumes:
+  redisdata:

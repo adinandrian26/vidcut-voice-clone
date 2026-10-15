@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: vidcut-voice-clone
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: VC_HOST
+        value: 0.0.0.0
+      - key: VC_PORT
+        value: 8520
+      - key: VC_DATA_DIR
+        value: /srv/storage/data
+      - key: VC_DB_PATH
+        value: /srv/storage/data/jobs.db
+      - key: VC_VOICES_DIR
+        value: /srv/storage/voices
+      - key: HF_HOME
+        value: /srv/storage/hf_cache
+      - key: HF_HUB_CACHE
+        value: /srv/storage/hf_cache
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: MKL_NUM_THREADS
+        value: "1"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+      - key: VC_CORS_ORIGINS
+        sync: false
+    disk:
+      name: vidcut-voice-storage
+      mountPath: /srv/storage
+      sizeGB: 10

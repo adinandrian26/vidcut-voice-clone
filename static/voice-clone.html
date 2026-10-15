@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Clone — VidCut</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wrap">
+  <h1>Voice Clone <span class="badge-ai">Suara AI</span></h1>
+  <p class="muted">Tempel link YouTube <b>atau</b> unggah file audio sebagai sampel suara.</p>
+
+  <section class="card" aria-label="Sumber suara">
+    <label for="yt">Link YouTube</label>
+    <input id="yt" type="url" placeholder="https://www.youtube.com/watch?v=...">
+    <div class="row">
+      <div>
+        <label for="start">Mulai detik ke</label>
+        <input id="start" type="number" min="0" value="0">
+      </div>
+      <div>
+        <label for="dur">Durasi sampel (dtk)</label>
+        <input id="dur" type="number" min="5" max="120" value="30">
+      </div>
+    </div>
+    <label for="file">Atau unggah file (wav/mp3/m4a/ogg/flac, maks 50 MB)</label>
+    <input id="file" type="file" accept=".wav,.mp3,.m4a,.ogg,.flac">
+  </section>
+
+  <section class="card" aria-label="Teks">
+    <label for="teks">Teks (maks 2000 karakter)</label>
+    <textarea id="teks" rows="5" maxlength="2000" placeholder="Tulis teks..."></textarea>
+    <div class="row">
+      <div>
+        <label for="lang">Bahasa</label>
+        <select id="lang">
+          <option value="id">Indonesia</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+    <label class="consent">
+      <input id="consent" type="checkbox">
+      Saya adalah pemilik suara ini atau punya izin tertulis dari pemiliknya.
+      <a href="terms.html" target="_blank">Syarat Penggunaan</a>
+    </label>
+    <button id="go" type="button">Generate</button>
+  </section>
+
+  <section class="card" id="prog-card" hidden aria-label="Progres">
+    <div class="bar"><div id="bar" style="width:0%"></div></div>
+    <p id="stage">Menunggu...</p>
+    <p id="warn" class="warn"></p>
+    <audio id="player" controls hidden></audio>
+    <div class="row" id="dl-row" hidden>
+      <a id="dl-wav" href="#" download><button type="button">Unduh WAV</button></a>
+      <a id="dl-mp3" href="#" download><button type="button">Unduh MP3</button></a>
+      <button id="del" type="button">Hapus data saya</button>
+    </div>
+  </section>
+  <p id="err" class="err" role="alert"></p>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

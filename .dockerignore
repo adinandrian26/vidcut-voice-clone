@@ -1,0 +1,15 @@
+.git
+.gitignore
+.env
+__pycache__
+**/__pycache__
+*.pyc
+.pytest_cache
+data
+voices
+models
+tmp_ab
+tmp_*.py
+tmp_*.txt
+*.log
+tests
