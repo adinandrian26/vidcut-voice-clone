@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt \
- && pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
- && pip install --no-cache-dir torchaudio --index-url https://download.pytorch.org/whl/cpu \
+ && pip install --no-cache-dir torch==2.6.0 torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cpu \
  && pip install --no-cache-dir demucs piper-tts av librosa pydub eng_to_ipa transformers \
      whisper-timestamped inflect unidecode pypinyin jieba gruut langcodes cn2an wavmark \
  && pip install --no-cache-dir --no-deps git+https://github.com/myshell-ai/OpenVoice.git \

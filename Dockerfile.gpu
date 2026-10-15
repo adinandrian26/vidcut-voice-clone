@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt \
- && pip3 install --no-cache-dir torch torchaudio demucs piper-tts av librosa \
+ && pip3 install --no-cache-dir torch==2.6.0 torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cu121 \
+ && pip3 install --no-cache-dir demucs piper-tts av librosa \
      pydub eng_to_ipa transformers whisper-timestamped inflect unidecode pypinyin \
      jieba gruut langcodes cn2an wavmark \
  && pip3 install --no-cache-dir --no-deps git+https://github.com/myshell-ai/OpenVoice.git \
