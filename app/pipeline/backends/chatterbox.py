@@ -142,5 +142,7 @@ class ChatterboxBackend:
         )
         import soundfile as sf
         out_wav.parent.mkdir(parents=True, exist_ok=True)
+        if hasattr(wav, "detach"):
+            wav = wav.detach().cpu().squeeze().numpy()
         sf.write(str(out_wav), wav, model.sr)
         return out_wav
