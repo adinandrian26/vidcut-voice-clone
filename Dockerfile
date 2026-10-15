@@ -23,4 +23,4 @@ COPY app app
 COPY .env.example .env
 
 EXPOSE 8520
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8520"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8520}"]
