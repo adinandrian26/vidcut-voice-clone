@@ -44,7 +44,7 @@ def _prepare_reference(path: str | None) -> str:
     return out
 
 
-@spaces.GPU(duration=150)
+@spaces.GPU(duration=120)
 def _generate(reference_path: str, text: str, prompt_text: str,
               steps: int, cfg: float, seed: int):
     kwargs = dict(

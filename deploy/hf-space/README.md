@@ -23,6 +23,11 @@ benchmark MiniMax-MLS mencatat kemiripan suara Indonesia tertinggi
    [vidcut-voice-clone](https://github.com/adinandrian26/vidcut-voice-clone):
    `app.py`, `requirements.txt`, dan README ini (Space membaca
    metadata di baris paling atas).
+   Cara cepat (satu perintah, dari folder repo):
+   ```powershell
+   .\deploy\hf-space\deploy-space.ps1 -SpaceId "username/nama-space"
+   ```
+   Atau manual lewat web (drag & drop).
 3. Buka **Settings → Space hardware** dan pilih **ZeroGPU**.
 4. Space akan build (beberapa menit). Kunjungan pertama mengunduh model
    (± beberapa GB) sehingga lambat sekali; setelah itu responsif.
