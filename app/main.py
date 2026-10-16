@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import hmac
 import json
 import re
 import shutil
@@ -25,12 +26,25 @@ store = JobStore(settings.db_path)
 limiter = RateLimiter(settings.rate_per_minute)
 _worker_stop = start_worker(store)
 
+
+@app.middleware("http")
+async def require_api_key(request: Request, call_next):
+    """Protect public cloud endpoints; health remains usable for monitoring."""
+    protected = (request.url.path.startswith("/api/")
+                 and request.url.path != "/api/health")
+    if protected and settings.api_key:
+        supplied = request.headers.get("x-api-key", "")
+        if not hmac.compare_digest(supplied, settings.api_key):
+            return JSONResponse(status_code=401,
+                                content={"detail": "API key tidak valid."})
+    return await call_next(request)
+
 if settings.cors_origins:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
         allow_methods=["GET", "POST", "DELETE"],
-        allow_headers=["Content-Type"],
+        allow_headers=["Content-Type", "X-API-Key"],
     )
 
 

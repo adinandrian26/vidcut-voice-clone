@@ -50,3 +50,12 @@ def test_upload_tanpa_consent_ditolak(client):
 
 def test_health(client):
     assert client.get("/api/health").status_code == 200
+
+
+def test_api_key_melindungi_endpoint(client, monkeypatch):
+    monkeypatch.setattr(main_mod.settings, "api_key", "rahasia-test")
+    assert client.get("/api/health").status_code == 200
+    assert client.get("/api/voices").status_code == 401
+    allowed = client.get("/api/voices",
+                         headers={"X-API-Key": "rahasia-test"})
+    assert allowed.status_code == 200

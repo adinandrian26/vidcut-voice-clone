@@ -138,3 +138,27 @@ VC_API_URL = "https://vidcut-voice-clone.onrender.com"
 ```
 
 Jangan gunakan `localhost` untuk URL yang dipakai Streamlit Cloud.
+
+## 7. GitHub Codespaces (tanpa kartu, tanpa PC sebagai server)
+
+Repository ini menyertakan konfigurasi `.devcontainer`. Buat Codespace dari
+branch `main`; dependensi Chatterbox akan dipasang dan API otomatis dijalankan
+pada port `8520`. Pilih mesin minimal **2-core / 8 GB RAM**. Mesin 4-core lebih
+cepat, tetapi menghabiskan kuota core-hours dua kali lebih cepat.
+
+Sebelum membuat Codespace, tambahkan Codespaces secret `VC_API_KEY` pada
+repository ini. Gunakan nilai acak yang panjang. Setelah Codespace siap:
+
+1. Buka tab **Ports** dan pastikan port `8520` berstatus **Public**.
+2. Salin URL HTTPS port tersebut.
+3. Cek `<URL>/api/health`; respons harus menyebut backend `chatterbox`.
+4. Pada Streamlit Cloud Secrets, isi:
+
+   ```toml
+   VC_API_URL = "https://...app.github.dev"
+   VC_API_KEY = "nilai-yang-sama-dengan-codespaces-secret"
+   ```
+
+Model diunduh saat penggunaan pertama. Codespace berhenti saat idle; buka lagi
+melalui GitHub untuk mengaktifkannya. Data dan cache tetap ada selama Codespace
+tidak dihapus. Ini cocok untuk pemakaian pribadi/sesekali, bukan layanan 24/7.

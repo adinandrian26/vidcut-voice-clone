@@ -1,0 +1,37 @@
+{
+  "name": "VidCut Chatterbox API",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "containerEnv": {
+    "VC_BACKEND": "chatterbox",
+    "VC_DEVICE": "cpu",
+    "VC_EXAGGERATION": "0.4",
+    "VC_CFG_WEIGHT": "0.3",
+    "VC_T3_MODEL": "v3",
+    "VC_DATA_DIR": "/workspaces/vidcut-voice-clone/data",
+    "VC_DB_PATH": "/workspaces/vidcut-voice-clone/data/jobs.db",
+    "VC_VOICES_DIR": "/workspaces/vidcut-voice-clone/voices",
+    "HF_HOME": "/workspaces/vidcut-voice-clone/models/hf_cache",
+    "HF_HUB_CACHE": "/workspaces/vidcut-voice-clone/models/hf_cache",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "forwardPorts": [8520],
+  "portsAttributes": {
+    "8520": {
+      "label": "VidCut Voice Clone API",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    }
+  },
+  "postStartCommand": "bash .devcontainer/start-api.sh",
+  "remoteUser": "vscode",
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb",
+    "storage": "32gb"
+  }
+}

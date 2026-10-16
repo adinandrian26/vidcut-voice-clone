@@ -57,6 +57,8 @@ class Settings:
     chatterbox_exaggeration: float = _get_float("VC_EXAGGERATION", 0.5)
     chatterbox_cfg_weight: float = _get_float("VC_CFG_WEIGHT", 0.5)
     chatterbox_t3_model: str = _get("VC_T3_MODEL", "v3")
+    # Wajibkan header X-API-Key bila nilai ini diisi (disarankan untuk cloud).
+    api_key: str = _get("VC_API_KEY", "").strip()
     # CORS: domain website, koma-dipisah. Kosong = tolak semua kecuali same-origin.
     cors_origins: list[str] = field(default_factory=lambda: [
         o.strip() for o in _get("VC_CORS_ORIGINS", "").split(",") if o.strip()
