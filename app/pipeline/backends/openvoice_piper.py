@@ -42,10 +42,18 @@ class OpenVoicePiperBackend:
     name = "openvoice_piper"
 
     def __init__(self, piper_voice: str, device: str = "auto",
-                 model_dir: Path | None = None) -> None:
+                 model_dir: Path | None = None,
+                 length_scale: float = 1.0,
+                 noise_scale: float = 0.8,
+                 noise_w_scale: float = 0.9) -> None:
         self.piper_voice = piper_voice
         self.device = _device_wanted(device)
         self.model_dir = Path(model_dir or Path("models")).resolve()
+        # Knop naturalness Piper: noise lebih tinggi = variasi intonasi
+        # lebih hidup (kurang robot), tetapi terlalu tinggi bisa artefak.
+        self.length_scale = length_scale
+        self.noise_scale = noise_scale
+        self.noise_w_scale = noise_w_scale
         self._piper = None
         self._converter = None
         self._source_se = None
@@ -61,6 +69,7 @@ class OpenVoicePiperBackend:
                 "Unduh dulu (lihat README bagian model).")
         try:
             from piper import PiperVoice
+            from piper.config import SynthesisConfig
         except ImportError as e:
             raise BackendError("Paket piper-tts belum terpasang.") from e
         # Load Piper once per job instead of once per sentence.
@@ -68,8 +77,14 @@ class OpenVoicePiperBackend:
             self._piper = PiperVoice.load(str(voice_file))
         out_wav.parent.mkdir(parents=True, exist_ok=True)
         import wave
+        syn_config = SynthesisConfig(
+            length_scale=self.length_scale,
+            noise_scale=self.noise_scale,
+            noise_w_scale=self.noise_w_scale,
+            normalize_audio=True,
+        )
         with wave.open(str(out_wav), "wb") as f:
-            self._piper.synthesize_wav(text, f)
+            self._piper.synthesize_wav(text, f, syn_config=syn_config)
         # pastikan 24k mono
         from ..audio import to_wav_mono
         fixed = out_wav.with_name(out_wav.stem + "_24k.wav")
@@ -195,9 +210,12 @@ class OpenVoicePiperBackend:
 def get_backend(name: str, **kwargs):
     if name == "openvoice_piper":
         return OpenVoicePiperBackend(
-            piper_voice=kwargs.get("piper_voice", "id_ID-fajri-medium"),
+            piper_voice=kwargs.get("piper_voice", "id_ID-news_tts-medium"),
             device=kwargs.get("device", "auto"),
-            model_dir=kwargs.get("model_dir"))
+            model_dir=kwargs.get("model_dir"),
+            length_scale=float(kwargs.get("piper_length_scale", 1.0)),
+            noise_scale=float(kwargs.get("piper_noise_scale", 0.8)),
+            noise_w_scale=float(kwargs.get("piper_noise_w_scale", 0.9)))
     if name == "xtts":
         from .xtts import XTTSBackend
         return XTTSBackend(**kwargs)

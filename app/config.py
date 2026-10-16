@@ -53,6 +53,10 @@ class Settings:
     # Model: "openvoice_piper" (default, MIT, Indonesia) — ganti di sini
     voice_backend: str = _get("VC_BACKEND", "openvoice_piper")
     piper_voice: str = _get("VC_PIPER_VOICE", "id_ID-news_tts-medium")
+    # Naturalness Piper (kurangi robot): noise 0.6 datar - 1.0 hidup.
+    piper_length_scale: float = _get_float("VC_PIPER_LENGTH", 1.0)
+    piper_noise_scale: float = _get_float("VC_PIPER_NOISE", 0.8)
+    piper_noise_w_scale: float = _get_float("VC_PIPER_NOISE_W", 0.9)
     device: str = _get("VC_DEVICE", "auto")  # auto | cpu | cuda
     chatterbox_exaggeration: float = _get_float("VC_EXAGGERATION", 0.5)
     chatterbox_cfg_weight: float = _get_float("VC_CFG_WEIGHT", 0.5)
