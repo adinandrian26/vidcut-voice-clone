@@ -36,7 +36,18 @@ class JobStore:
             c.executescript(SCHEMA)
 
     def _conn(self) -> sqlite3.Connection:
-        return sqlite3.connect(self._db)
+        c = sqlite3.connect(self._db, timeout=10.0)
+        # WAL + busy timeout: dua proses (api & worker di docker-compose)
+        # boleh membaca/menulis DB yang sama tanpa "database is locked".
+        try:
+            c.execute("PRAGMA journal_mode=WAL")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            c.execute("PRAGMA busy_timeout=10000")
+        except sqlite3.OperationalError:
+            pass
+        return c
 
     def create(self, params: dict[str, Any]) -> str:
         jid = uuid.uuid4().hex[:12]
@@ -85,15 +96,30 @@ class JobStore:
         return d
 
     def next_queued(self) -> Optional[dict[str, Any]]:
+        """Ambil satu job queued dan tandai downloading secara atomik.
+
+        Aman untuk banyak worker sekaligus (thread maupun proses terpisah,
+        mis. replika api+worker di docker-compose): klaim memakai
+        BEGIN IMMEDIATE + UPDATE bersyarat, jadi hanya satu worker
+        yang memenangkan tiap job.
+        """
         with self._lock, self._conn() as c:
             c.row_factory = sqlite3.Row
+            try:
+                c.execute("BEGIN IMMEDIATE")
+            except sqlite3.OperationalError:
+                return None
             row = c.execute(
                 "SELECT * FROM jobs WHERE status = 'queued'"
                 " ORDER BY created_at LIMIT 1").fetchone()
             if row is None:
                 return None
-            c.execute("UPDATE jobs SET status = 'downloading',"
-                      " updated_at = ? WHERE id = ?", (time.time(), row["id"]))
+            cur = c.execute(
+                "UPDATE jobs SET status = 'downloading', updated_at = ?"
+                " WHERE id = ? AND status = 'queued'",
+                (time.time(), row["id"]))
+            if cur.rowcount == 0:
+                return None  # kalah lomba dengan worker lain
             return dict(row)
 
     def delete(self, jid: str) -> bool:

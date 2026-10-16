@@ -24,3 +24,6 @@ python-dotenv>=1.0
 # 5. Backend Chatterbox Multilingual V3 (opsional, kualitas lebih tinggi):
 #    pip install --no-deps "git+https://github.com/resemble-ai/chatterbox.git"
 #    pip install transformers==5.2.0 safetensors==0.5.3 librosa==0.11.0
+# 6. Backend VoxCPM2 (opsional, kemiripan tertinggi, Indonesia resmi,
+#    butuh RAM >= 16 GB di CPU atau GPU ~8 GB VRAM):
+#    pip install voxcpm
