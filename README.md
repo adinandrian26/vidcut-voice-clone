@@ -25,6 +25,8 @@ python -m pip install --no-deps "git+https://github.com/myshell-ai/OpenVoice.git
 # Opsional, clone berkualitas lebih tinggi (butuh RAM/GPU lebih besar):
 python -m pip install --no-deps "git+https://github.com/resemble-ai/chatterbox.git"
 python -m pip install transformers==5.2.0 safetensors==0.5.3 librosa==0.11.0
+# Opsional, kemiripan tertinggi + Indonesia resmi (RAM >= 16 GB / VRAM ~8 GB):
+python -m pip install voxcpm
 ```
 
 Catatan Windows: paket `av` versi lama gagal build, jadi pasang `av`
@@ -78,8 +80,12 @@ Lihat `.env.example`. Poin penting:
 - `VC_BACKEND=openvoice_piper` — ganti model lewat variabel ini.
 - `VC_BACKEND=chatterbox` — Chatterbox Multilingual V3; teks Indonesia
   diproses dengan fonem Melayu (`ms`) karena kode `id` belum didukung resmi.
+- `VC_BACKEND=voxcpm2` — VoxCPM2 (Apache-2.0): Bahasa Indonesia **resmi**,
+  kemiripan suara tertinggi (SIM Indonesia 80,0 pada benchmark MiniMax-MLS).
+  Butuh RAM ≥16 GB (CPU) atau VRAM ~8 GB (GPU). Pasang: `pip install voxcpm`.
 - `VC_EXAGGERATION=0.5`, `VC_CFG_WEIGHT=0.5`, `VC_T3_MODEL=v3`
-- Bobot Chatterbox disimpan di `models/hf_cache` pada drive proyek.
+- `VC_VOXCPM_STEPS=10`, `VC_VOXCPM_CFG=2.0`, `VC_VOXCPM_SEED=42`
+- Bobot Chatterbox/VoxCPM disimpan di `models/hf_cache` pada drive proyek.
 - `VC_PIPER_VOICE=id_ID-news_tts-medium`
 - `VC_DEVICE=auto` (cpu/cuda bila mau paksa)
 - `VC_RETENTION_HOURS=24`, `VC_RATE_PER_MINUTE=10`
@@ -109,6 +115,8 @@ Isi `VC_CORS_ORIGINS` dengan domain website.
   Sampel berisik / banyak pembicara → ditolak dengan pesan jelas.
 - OpenVoice v2 + Piper menghasilkan intonasi Piper dengan timbre
   sampel (bukan meniru gaya bicara/emosi 100%).
+- VoxCPM2 (2B parameter) butuh RAM ≥16 GB di CPU; di mesin 8 GB
+  gunakan `chatterbox` (0,5B) atau `openvoice_piper`.
 - XTTS-v2 tidak dipakai default: tidak resmi dukung Indonesia +
   lisensi non-komersial. Backend `xtts` tersedia untuk eksperimen
   non-komersial bahasa yang didukung.
@@ -123,6 +131,18 @@ Checkbox persetujuan wajib (ditolak server bila tidak dicentang),
 halaman Syarat (`static/terms.html`), badge Suara AI, rate limit,
 validasi ketat (tanpa shell-string), log audit tanpa isi audio,
 retensi 24 jam + tombol hapus data.
+
+## 10. Hosting publik (server, tanpa kartu, siapa saja bisa akses)
+
+Panduan lengkap: **[DEPLOY.md](DEPLOY.md)**. Ringkas:
+
+- **Gratis + GPU (tanpa kartu):** Hugging Face Space Gradio + ZeroGPU —
+  syarat akun HF berumur ≥30 hari; file siap pakai di `deploy/hf-space/`
+  (VoxCPM2, kuota GPU harian per pengunjung).
+- **GPU lokal tanpa kartu:** Biznet Gio NEO GPU, 1x H200 Rp74.000/jam
+  pay-as-you-go; pembayaran portal lokal.
+- **GPU internasional tanpa kartu:** RunPod via deposit kripto (min $10).
+- **CPU 24/7 termurah:** VPS lokal Biznet/IDCloudHost (transfer/QRIS).
 # VidCut Voice Clone API
 
 FastAPI backend untuk Voice Clone dan preset suara VidCut.

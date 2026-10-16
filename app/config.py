@@ -57,6 +57,11 @@ class Settings:
     chatterbox_exaggeration: float = _get_float("VC_EXAGGERATION", 0.5)
     chatterbox_cfg_weight: float = _get_float("VC_CFG_WEIGHT", 0.5)
     chatterbox_t3_model: str = _get("VC_T3_MODEL", "v3")
+    # VoxCPM2: kemiripan suara tertinggi + Bahasa Indonesia resmi.
+    voxcpm_model: str = _get("VC_VOXCPM_MODEL", "openbmb/VoxCPM2")
+    voxcpm_cfg: float = _get_float("VC_VOXCPM_CFG", 2.0)
+    voxcpm_steps: int = _get_int("VC_VOXCPM_STEPS", 10)
+    voxcpm_seed: int = _get_int("VC_VOXCPM_SEED", 42)
     # Wajibkan header X-API-Key bila nilai ini diisi (disarankan untuk cloud).
     api_key: str = _get("VC_API_KEY", "").strip()
     # CORS: domain website, koma-dipisah. Kosong = tolak semua kecuali same-origin.

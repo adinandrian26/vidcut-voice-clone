@@ -1,0 +1,10 @@
+# Perangkat ZeroGPU mendukung torch 2.8.0–2.13.x.
+torch>=2.8,<2.14
+torchaudio>=2.8,<2.14
+# voxcpm membutuhkan gradio >=6,<7 pada paket PyPI-nya.
+voxcpm
+gradio>=6,<7
+spaces
+soundfile
+librosa
+numpy

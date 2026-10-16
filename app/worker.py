@@ -39,7 +39,11 @@ def _work(store: JobStore, stop: threading.Event,
                                 "model_dir": settings.model_dir,
                                 "exaggeration": settings.chatterbox_exaggeration,
                                 "cfg_weight": settings.chatterbox_cfg_weight,
-                                "t3_model": settings.chatterbox_t3_model},
+                                "t3_model": settings.chatterbox_t3_model,
+                                "voxcpm_model": settings.voxcpm_model,
+                                "voxcpm_cfg": settings.voxcpm_cfg,
+                                "voxcpm_steps": settings.voxcpm_steps,
+                                "voxcpm_seed": settings.voxcpm_seed},
                 on_progress=on_progress or (lambda *a: None),
             )
         except Exception as e:  # noqa: BLE001 - simpan pesan ke job

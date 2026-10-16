@@ -209,6 +209,15 @@ def get_backend(name: str, **kwargs):
             cfg_weight=float(kwargs.get("cfg_weight", 0.5)),
             t3_model=kwargs.get("t3_model", "v3"),
         )
+    if name in ("voxcpm", "voxcpm2"):
+        from .voxcpm import VoxCPMBackend
+        return VoxCPMBackend(
+            device=kwargs.get("device", "auto"),
+            model_id=kwargs.get("voxcpm_model", "openbmb/VoxCPM2"),
+            cfg_value=float(kwargs.get("voxcpm_cfg", 2.0)),
+            steps=int(kwargs.get("voxcpm_steps", 10)),
+            seed=int(kwargs.get("voxcpm_seed", 42)),
+        )
     raise BackendError(f"Backend tidak dikenal: {name}. "
                        "Lihat VC_BACKEND di .env "
-                       "(openvoice_piper atau chatterbox).")
+                       "(openvoice_piper, chatterbox, atau voxcpm2).")
