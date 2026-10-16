@@ -151,8 +151,13 @@ repository ini. Gunakan nilai acak yang panjang. Setelah Codespace siap:
 
 1. Buka tab **Ports** dan pastikan port `8520` berstatus **Public**.
 2. Salin URL HTTPS port tersebut.
-3. Cek `<URL>/api/health`; respons harus menyebut backend `chatterbox`.
-4. Pada Streamlit Cloud Secrets, isi:
+3. Buka URL tersebut langsung di Chrome/Edge. Website Voice Clone tersedia di
+   halaman utama dan tidak membutuhkan Streamlit.
+4. Masukkan nilai `VC_API_KEY` ke kolom **Kunci akses**, lalu gunakan upload
+   audio/YouTube, generate, dengarkan, dan unduh hasil langsung dari browser.
+
+Jika tetap ingin memakai frontend Streamlit terpisah, isi Streamlit Cloud
+Secrets berikut:
 
    ```toml
    VC_API_URL = "https://...app.github.dev"

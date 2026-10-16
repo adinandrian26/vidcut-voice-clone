@@ -52,6 +52,17 @@ def test_health(client):
     assert client.get("/api/health").status_code == 200
 
 
+def test_browser_ui(client):
+    page = client.get("/")
+    assert page.status_code == 200
+    assert "Voice Clone" in page.text
+    javascript = client.get("/static/app.js")
+    assert javascript.status_code == 200
+    assert '$("prog-card")' in javascript.text
+    assert '$("progress")' not in javascript.text
+    assert client.get("/terms").status_code == 200
+
+
 def test_api_key_melindungi_endpoint(client, monkeypatch):
     monkeypatch.setattr(main_mod.settings, "api_key", "rahasia-test")
     assert client.get("/api/health").status_code == 200

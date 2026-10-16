@@ -20,6 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
  && pip install --no-cache-dir git+https://github.com/resemble-ai/Perth.git@master
 
 COPY app app
+COPY static static
 COPY .env.example .env
 
 EXPOSE 8520

@@ -12,6 +12,7 @@ from pathlib import Path
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from .audit import audit
 from .config import settings
@@ -25,6 +26,7 @@ app = FastAPI(title="VidCut Voice Clone", version="1.0.0")
 store = JobStore(settings.db_path)
 limiter = RateLimiter(settings.rate_per_minute)
 _worker_stop = start_worker(store)
+static_dir = Path(__file__).resolve().parent.parent / "static"
 
 
 @app.middleware("http")
@@ -67,6 +69,16 @@ def _status_dict(jid: str) -> dict:
         "has_audio": (jd / "result.wav").exists(),
         "warning": row["warning"],
     }
+
+
+@app.get("/", include_in_schema=False)
+def web_app() -> FileResponse:
+    return FileResponse(static_dir / "voice-clone.html")
+
+
+@app.get("/terms", include_in_schema=False)
+def terms_page() -> FileResponse:
+    return FileResponse(static_dir / "terms.html")
 
 
 @app.get("/api/health", response_model=HealthStatus)
@@ -285,3 +297,6 @@ def voice_delete(vid: str, request: Request):
     shutil.rmtree(vdir, ignore_errors=True)
     audit("voice_deleted", voice_id=vid, ip=ip)
     return {"deleted": vid}
+
+
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
