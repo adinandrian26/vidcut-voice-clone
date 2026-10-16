@@ -9,6 +9,8 @@ yang bisa dibuka siapa saja tanpa meng-clone repo.
 | Opsi | Biaya | Butuh kartu? | GPU | Website publik 24/7? |
 |---|---|---|---|---|
 | **A. HF Space ZeroGPU** (Gradio) | Gratis | **Tidak** | Ya (kuota harian) | Ya |
+| **F. Google Colab / Kaggle** + link Gradio | Gratis | **Tidak** | Ya (T4, kuota harian) | Sementara (≤ ±12 jam/sesi, URL berubah) |
+| **G. Modal serverless** ($30 kredit/bulan) | Gratis s.d. $30/bln | **Cek saat daftar** | Ya (T4 $0,59/jam) | Ya (URL publik per endpoint) |
 | **B. Biznet Gio NEO GPU** (Indonesia) | Rp74.000/jam (1x H200) | **Tidak** (pembayaran lokal) | Ya, H200 | Ya, selama mesin berjalan |
 | **C. RunPod** (internasional) | Mulai ~$0,2–0,7/jam (kelas RTX) | **Tidak** via kripto | Ya | Ya, selama pod berjalan |
 | **D. GitHub Codespaces** | Gratis (kuota bulanan) | **Tidak** | Tidak (CPU) | Sementara (mati saat idle) |
@@ -20,8 +22,9 @@ juga hanya 512 MB RAM — Chatterbox (0,5B) dan VoxCPM2 (2B) tidak muat.
 
 ## Rekomendasi jalur
 
-1. **Sekarang:** pakai Codespaces (lihat bagian D / README) untuk uji coba
-   dengan backend `chatterbox` atau `openvoice_piper`.
+1. **Sekarang + GPU gratis:** Google Colab (lihat bagian F) — file
+   `deploy/colab/` siap Run-all, dapat URL publik sementara.
+   Codespaces (lihat bagian D / README) untuk uji coba CPU.
 2. **Setelah akun Hugging Face berumur ≥30 hari + email terverifikasi:**
    dirikan **Space ZeroGPU** (bagian A) — gratis, publik, dan GPU.
    Ini adalah tujuan akhir "website bisa diakses siapa saja".
@@ -111,6 +114,34 @@ Ringkas:
   `chatterbox` (0,5B) atau `openvoice_piper`.
 - Port `8520` dijadikan **Public** → URL bisa dibuka siapa saja selama
   Codespace hidup. Ini bukan hosting 24/7 (Codespace berhenti saat idle).
+
+## F. Google Colab / Kaggle (gratis, tanpa kartu, URL publik sementara)
+
+Terverifikasi dari FAQ resmi Colab: **gratis termasuk GPU/TPU**, cukup
+akun Google (tanpa kartu). Cara termudah: file notebook siap pakai di
+`deploy/colab/` — buka via badge "Open in Colab", pilih runtime **T4
+GPU**, **Run all**. Notebook menginstal `voxcpm`, mengambil repo dari
+GitHub, dan menjalankan `deploy/hf-space/app.py` dengan link publik
+Gradio (`https://xxx.gradio.live`, otomatis dibuat di Colab).
+
+Batas jujur (aturan resmi Colab): sesi maksimal ±12 jam, mesin mati
+bila idle, jenis GPU dan kuota harian berubah-ubah tanpa publikasi.
+Colab juga melarang pemakaian "bypass UI notebook untuk layanan web
+24/7" — jadi pakai pola sesi interaktif (demo per sesi), bukan server
+permanen. Kaggle setara sebagai cadangan (GPU gratis ±30 jam/minggu,
+butuh verifikasi no. HP, nyalakan Internet + GPU di pengaturan
+notebook). Di kedua platform, kunjungan pertama lambat (unduh model
+beberapa GB); hemat kuota dengan mematikan runtime bila selesai.
+
+## G. Modal serverless (kredit $30/bulan, cek kartu saat daftar)
+
+Terverifikasi dari halaman pricing resmi Modal (2026): paket Starter
+**$0 + komputasi dengan $30 kredit gratis tiap bulan**. GPU T4
+$0,000164/detik (≈ $0,59/jam) → ±50 jam T4 gratis per bulan; L4 ±37
+jam. Model serverless (bayar per detik, URL HTTPS publik per endpoint)
+cocok untuk website yang dipakai sesekali. Yang belum terverifikasi:
+apakah pendaftaran meminta kartu — **konfirmasi di halaman signup**;
+bila diminta kartu, lewati opsi ini (tetap ada A–F yang tanpa kartu).
 
 ## E. VPS CPU lokal 24/7 (Biznet Gio / IDCloudHost)
 

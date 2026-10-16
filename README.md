@@ -136,6 +136,9 @@ retensi 24 jam + tombol hapus data.
 
 Panduan lengkap: **[DEPLOY.md](DEPLOY.md)**. Ringkas:
 
+- **Gratis + GPU, tanpa kartu, SEKARANG:** Google Colab/Kaggle —
+  notebook siap Run-all di `deploy/colab/` (VoxCPM2 + URL publik
+  `*.gradio.live` sementara per sesi).
 - **Gratis + GPU (tanpa kartu):** Hugging Face Space Gradio + ZeroGPU —
   syarat akun HF berumur ≥30 hari; file siap pakai di `deploy/hf-space/`
   (VoxCPM2, kuota GPU harian per pengunjung).
