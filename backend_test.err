@@ -1,11 +1,0 @@
-INFO:     Started server process [13040]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8520 (Press CTRL+C to quit)
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-  0%|                                                                     | 0.0/35.099999999999994 [00:00<?, ?seconds/s] 17%|##########                                                  | 5.85/35.099999999999994 [00:28<02:21,  4.82s/seconds] 33%|####################                                        | 11.7/35.099999999999994 [00:49<01:36,  4.12s/seconds] 50%|#######################                       | 17.549999999999997/35.099999999999994 [01:11<01:10,  4.00s/seconds] 67%|########################################                    | 23.4/35.099999999999994 [01:33<00:45,  3.90s/seconds] 83%|#################################################1         | 29.25/35.099999999999994 [01:55<00:22,  3.82s/seconds]100%|##############################################| 35.099999999999994/35.099999999999994 [02:19<00:00,  3.93s/seconds]100%|##############################################| 35.099999999999994/35.099999999999994 [02:19<00:00,  3.98s/seconds]
-C:\Users\useRc\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\torch\nn\utils\weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
-  WeightNorm.apply(module, name, dim)
-C:\Users\useRc\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\torch\functional.py:709: UserWarning: stft with return_complex=False is deprecated. In a future pytorch release, stft will return complex tensors for all inputs, and return_complex=False will raise an error.
-Note: you can still call torch.view_as_real on the complex output to recover the old return format. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\native\SpectralOps.cpp:878.)
-  return _VF.stft(  # type: ignore[attr-defined]
