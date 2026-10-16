@@ -127,18 +127,29 @@ HTTPS di depannya, isi `VC_CORS_ORIGINS` dengan domain.
 
 ## Perbandingan model (prioritas: kemiripan suara Indonesia)
 
-| Model | Lisensi | Indonesia | Kemiripan | Kebutuhan |
-|---|---|---|---|---|
-| **VoxCPM2** (OpenBMB) | Apache-2.0 | **Resmi** (30 bahasa) | **SIM 80,0** (tertinggi, benchmark MiniMax-MLS) | GPU ~8 GB VRAM / RAM ≥16 GB |
-| Chatterbox Multilingual V3 | MIT | via fonem Melayu `ms` | Bagus (kelas ElevenLabs) | 0,5B — RAM 8 GB cukup |
-| FishAudio S2 / Drama 3 | Lisensi riset/komunitas | — | SIM 76,3 | Tidak dipakai (lisensi ketat) |
-| CosyVoice 3 | Apache-2.0 | Tidak didukung | — | — |
-| Qwen3-TTS | Apache-2.0 | Tidak ada bukti dukungan | — | — |
-| XTTS-v2 | Non-komersial (CPML) | Tidak resmi | — | Hanya eksperimen |
-| OpenVoice v2 + Piper id_ID | MIT | Ya (Piper id_ID) | Cukup (timbre saja) | Ringan, CPU ok |
+Hasil verifikasi ulang dari README resmi tiap repo (Oktober 2026).
+Angka SIM/SS/WER di bawah adalah benchmark milik vendor masing-masing
+(jadi berpotensi bias), tapi daftar bahasa dan lisensi adalah fakta.
 
-Kesimpulan: **VoxCPM2** untuk kemiripan tertinggi; **Chatterbox V3**
-untuk keseimbangan RAM/kecepatan; **OpenVoice + Piper** untuk CPU kecil.
+| Model | Mirip ElevenLabs? | Indonesia | Lisensi | Ukuran | Vonis |
+|---|---|---|---|---|---|
+| **VoxCPM2** (OpenBMB) | SIM id **80,0** vs ElevenLabs 66,0 (MiniMax-MLS) | **Resmi** (30 bahasa) | Apache-2.0 | 2B, ~8 GB VRAM | ✅ **pilihan utama** (sudah jadi backend `voxcpm2`) |
+| Chatterbox Multilingual V3 | Klaim vendor "kelas ElevenLabs" | via fonem Melayu `ms` | MIT | 0,5B, RAM 8 GB cukup | ✅ cadangan ringan (sudah jadi backend `chatterbox`) |
+| Qwen3-TTS 0.6B/1.7B-Base | SIM **di atas ElevenLabs** di 10 bahasanya (mis. en 0,829 vs 0,613) | ❌ **tidak ada** (zh, en, ja, ko, de, fr, ru, pt, es, it) | Apache-2.0 | 0,6B ringan | ❌ bukan untuk Indonesia; opsi bila butuh Inggris |
+| Fish S2-Pro / Drama 3 | SIM terbaik di 17/24 bahasa; WER SOTA | ±100 bahasa (id kemungkinan ada) | ❌ lisensi komunitas/riset khusus (non-komersial, pelanggaran ditindak) | S2-Pro 4B / Drama 3 35B-MoE | ❌ lisensi + terlalu berat untuk hosting gratis |
+| CosyVoice 3 (0.5B) | SS zh 78,0 / en 71,8 (SOTA open) | ❌ (9 bahasa + dialek Mandarin, tanpa id) | Apache-2.0 | 0,5B ringan | ❌ bukan untuk Indonesia |
+| IndexTTS-2.5 | SS kompetitif, RTF 0,2 (cepat) | ❌ (zh, en, ja, es, ar) | ❌ lisensi khusus Bilibili | 0,8B | ❌ bahasa + lisensi |
+| Zonos v0.1 (Zyphra) | Klaim vendor "setara/melampaui provider top" | ❌ (en, ja, zh, fr, de) | Apache-2.0 | VRAM 6 GB+ | ❌ bukan untuk Indonesia |
+| Seed-VC (Plachtaa) | VC zero-shot 1–30 detik, kualitas level RVC | ✅ **agnostik bahasa** (konversi, bukan TTS) | ⚠️ **GPL-3.0** (copyleft) | 25M–200M ringan | ⚠️ kandidat pengganti converter OpenVoice; boleh jalan server-side, tapi perlu kajian lisensi bobot |
+| GPT-SoVITS / RVC | mirip bila training per speaker | ✅ agnostik (training) | MIT | butuh training + GPU | ⚠️ tidak praktis untuk pengunjung acak (zero-shot lemah) |
+| OpenVoice v2 + Piper id_ID | di bawah semua di atas (timbre saja) | ✅ ya (Piper id_ID) | MIT | ringan, CPU ok | ✅ cadangan CPU kecil (sudah jadi backend default) |
+
+Kesimpulan (tidak berubah, kini terverifikasi):
+**VoxCPM2** satu-satunya yang sekaligus (1) resmi dukung Indonesia,
+(2) SIM Indonesia tertinggi yang terdokumentasi, (3) lisensi permisif
+komersial, (4) zero-shot untuk pengunjung acak. Jalur upgrade kemiripan
+berikutnya tanpa ganti TTS: **Piper id_ID → Seed-VC** (menggantikan
+converter OpenVoice), dengan catatan lisensi GPL-3.0.
 
 ## Mengaktifkan VoxCPM2 di aplikasi ini
 

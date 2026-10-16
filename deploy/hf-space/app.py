@@ -121,4 +121,4 @@ with gr.Blocks(title="VidCut Voice Clone") as demo:
         "[github.com/adinandrian26/vidcut-voice-clone]"
         "(https://github.com/adinandrian26/vidcut-voice-clone)")
 
-demo.launch()
+demo.launch(share=os.environ.get("GRADIO_SHARE", "0") == "1")
